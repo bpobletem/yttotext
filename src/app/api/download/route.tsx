@@ -25,15 +25,13 @@ export async function POST(request: Request) {
     // Download video
     try {
       await pipeline(
-        ytdl(ytLink, { 
-          filter: 'audioonly',
-          quality: 'highestaudio'
-        }),
+        ytdl(ytLink),
         fs.createWriteStream(videoPath)
       );
-    } catch (downloadError) {
-      console.error('Download error:', downloadError);
-      throw new Error(`Video download failed: ${downloadError.message}`);
+    } catch (e) {
+      console.error('Download error:', e);
+      const errorMessage = e instanceof Error ? e.message : String(e);
+      throw new Error(`Video download failed: ${errorMessage}`);
     }
 
     if (!process.env.ELEVENLABS_API_KEY) {
@@ -61,22 +59,18 @@ export async function POST(request: Request) {
         text: speechToTextResult.text 
       });
 
-    } catch (conversionError) {
-      console.error('Conversion error:', conversionError);
-      throw new Error(`Text conversion failed: ${conversionError.message}`);
+    } catch (e) {
+      console.error('Conversion error:', e);
+      const errorMessage = e instanceof Error ? e.message : String(e);
+      throw new Error(`Text conversion failed: ${errorMessage}`);
     }
 
   } catch (error) {
     console.error('API Error:', error);
-    
-    // Cleanup temp file if it exists
-    if (fs.existsSync(videoPath)) {
-      fs.unlinkSync(videoPath);
-    }
 
     return NextResponse.json({ 
       success: false,
-      error: error.message || 'Internal server error'
+      error: error instanceof Error ? error.message : 'Internal server error'
     }, { 
       status: 500 
     });
