@@ -55,11 +55,11 @@ export default function Home() {
   return (
     <div className="grid grid-rows-[20px_1fr_20px] items-center content-center h-screen w-screen pb-10 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)] bg-radial-[at_10%_95%] from-slate-700 via-gray-800 to-slate-900 to-90% bg-fixed bg-no-repeat scroll-smooth">
       <main className="flex flex-col gap-[32px] row-start-2 items-center">
-        <h1 className="flex text-3xl md:text-5xl font-extrabold mb-8 bg-gradient-to-bl from-white to-gray-300 bg-clip-text text-transparent">YouTube to Text</h1>
-        <p className="text-center text-gray-300 max-w-md mb-8">
+        <h1 className="flex text-3xl md:text-5xl font-extrabold mb-2 md:mb-8 bg-gradient-to-bl from-white to-gray-300 bg-clip-text text-transparent">YouTube to Text</h1>
+        <p className="text-center text-gray-300 max-w-md mb-2 md:mb-8">
           Paste a YouTube link to get its transcript. A simple way to extract and read the content of any video.
         </p>
-        <div className='flex items-center gap-2 md:gap-8 mb-8'>
+        <div className='flex items-center gap-2 md:gap-4 mb-2 md:mb-8'>
           <input
             className='flex p-2 bg-gray-900 rounded-md border border-gray-700'
             placeholder='Paste the youtube link'
@@ -67,7 +67,7 @@ export default function Home() {
             onChange={(e) => setYtLink(e.target.value)}
           ></input>
           <button
-            className='flex py-2 px-4 items-center bg-indigo-500 rounded-md hover:bg-indigo-900 hover:cursor-pointer transition duration-300'
+            className='flex py-2 px-4 items-center bg-gray-900 border border-gray-700 rounded-md hover:bg-slate-700 hover:cursor-pointer transition duration-300'
             onClick={() => downloadVideo(ytLink)}
             disabled={loading}>
             {loading ? (
@@ -104,7 +104,7 @@ export default function Home() {
                 )}
               </button>
             </div>
-            <div className="max-h-[350px] p-4 overflow-y-auto [&::-webkit-scrollbar]:w-1.5 [&::-webkit-scrollbar-track]:bg-transparent [&::-webkit-scrollbar-thumb]:bg-gray-600 [&::-webkit-scrollbar-thumb]:rounded-full">
+            <div className="max-h-[180px] md:max-h-[350px] p-4 overflow-y-auto [&::-webkit-scrollbar]:w-1.5 [&::-webkit-scrollbar-track]:bg-transparent [&::-webkit-scrollbar-thumb]:bg-gray-600 [&::-webkit-scrollbar-thumb]:rounded-full">
               {transcript}
             </div>
           </div>
