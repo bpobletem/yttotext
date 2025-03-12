@@ -4,7 +4,18 @@ import { useState } from 'react';
 export default function Home() {
   const [ytLink, setYtLink] = useState('');
   const [transcript, setTranscript] = useState('');
-  const [loading, setLoading] = useState(false)
+  const [loading, setLoading] = useState(false);
+  const [copied, setCopied] = useState(false);
+
+  const handleCopy = async () => {
+    try {
+      await navigator.clipboard.writeText(transcript);
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2000);
+    } catch (err) {
+      console.error('Failed to copy text: ', err);
+    }
+  };
 
   async function downloadVideo(ytLink: string) {
     setLoading(true);
@@ -66,7 +77,30 @@ export default function Home() {
           </button>
         </div>
         {transcript.length > 0 && (
-          <div className="max-w-2xl p-4 bg-gray-900 rounded-md">
+          <div className="relative max-w-2xl bg-gray-800 rounded-md backdrop-blur-sm bg-opacity-10 border border-gray-500">
+            <div className="sticky top-0 w-full flex justify-end bg-gray-900 border-b border-gray-700 rounded-t-md">
+              <button
+                onClick={handleCopy}
+                className="mx-5 py-1.5 text-sm transition-colors hover:cursor-pointer flex items-center gap-2"
+              >
+                {copied ? (
+                  <>
+                    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                    </svg>
+                    Copied!
+                  </>
+                ) : (
+                  <>
+                    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0 012-2h2a2 2 0 012 2m0 0h2a2 2 0 012 2v3m2 4H10m0 0l3-3m-3 3l3 3" />
+                    </svg>
+                    Copy
+                  </>
+                )}
+              </button>
+            </div>
+            <div className="max-h-[350px] p-4 overflow-y-auto [&::-webkit-scrollbar]:w-1.5 [&::-webkit-scrollbar-track]:bg-transparent [&::-webkit-scrollbar-thumb]:bg-gray-600 [&::-webkit-scrollbar-thumb]:rounded-full">
             {transcript}
           </div>
         )}
